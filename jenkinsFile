@@ -1,6 +1,9 @@
 pipeline {
   agent {
-    docker { image 'node:16-alpine' }
+    docker {
+      image 'maven:latest'
+      args '-v /root/.m2:/root/.m2 -v /var/run/docker.sock:/var/run/docker.sock' 
+    }
   }
   stages {
     stage('Git-checkout') {
@@ -10,7 +13,7 @@ pipeline {
     }
     stage('maven build') {
       steps {
-        sh 'mvn test'
+        sh 'mvn clean package'
         echo 'maven build works'
       }
     }
